@@ -11,7 +11,7 @@ VALUE_STRING : '\'' (STRING|LIKE_STRING) '\'';
 compareCondition : '=' | '>' | '>=' | '<' | '<=' | '%';
 sortCondition : '->' | '<-' ;
 limitCondition : '<->';
-tableName : STRING;
+tableName : STRING | STRING + '.' + STRING; //schema
 fieldName : STRING;
 value : VALUE_STRING | NUMBER | INTERVAL;
 NUMBER : '-'? INT ('.' [0-9] +)? EXP?;

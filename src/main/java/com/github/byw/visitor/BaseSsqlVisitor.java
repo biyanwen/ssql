@@ -116,7 +116,9 @@ public abstract class BaseSsqlVisitor extends SsqlBaseVisitor<String> {
 
 	@Override
 	public String visitTableName(SsqlParser.TableNameContext ctx) {
-		builder.append(ctx.getChild(0).getText());
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			builder.append(ctx.getChild(i).getText());
+		}
 		return super.visitTableName(ctx);
 	}
 
