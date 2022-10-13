@@ -23,4 +23,10 @@ class SsqlHelperTest {
 			SsqlHelper.createSqlForMysql("sc_scell_unit{unit_id<-&case_id=13539849&pgccr>=300&<->[1,5]}");
 		});
 	}
+
+	@Test
+	void createSqlForOracle() {
+		String sqlOracle = SsqlHelper.createSqlForOracle("PRODUCT_DIM{DEPARTMENT_NAME='Computers'&CATEGORY_ID>=-535&DEPARTMENT_ID<-&<->[2,5]}");
+		assertEquals("select * from (select rownum rn,t.* from ( select * from PRODUCT_DIM where DEPARTMENT_NAME = 'Computers' and CATEGORY_ID >= -535  order by DEPARTMENT_ID desc  ) t where rownum <= 5 ) e where e.rn >= 2 ;",sqlOracle);
+	}
 }

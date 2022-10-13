@@ -4,6 +4,7 @@ import com.github.byw.parser.SsqlBaseVisitor;
 import com.github.byw.parser.SsqlLexer;
 import com.github.byw.parser.SsqlParser;
 import com.github.byw.visitor.MysqlVisitor;
+import com.github.byw.visitor.OracleVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -26,6 +27,18 @@ public class SsqlHelper {
 	public static String createSqlForMysql(String ssqlStatement) {
 		SsqlParser.StatementsContext context = createContext(ssqlStatement);
 		MysqlVisitor visitor = new MysqlVisitor();
+		return visitor.visit(context);
+	}
+
+	/**
+	 * 为oracle创建sql
+	 *
+	 * @param ssqlStatement ssql声明
+	 * @return {@link String}
+	 */
+	public static String createSqlForOracle(String ssqlStatement) {
+		SsqlParser.StatementsContext context = createContext(ssqlStatement);
+		OracleVisitor visitor = new OracleVisitor();
 		return visitor.visit(context);
 	}
 

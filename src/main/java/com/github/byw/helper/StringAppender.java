@@ -21,7 +21,10 @@ public class StringAppender {
 			throw new IllegalArgumentException("不能拼接空字符串");
 		}
 		beforeStrLogic = str;
-		appendable.append(" ").append(str);
+		if (appendable.length() > 0) {
+			appendable.append(" ");
+		}
+		appendable.append(str);
 		return this;
 	}
 
@@ -45,6 +48,16 @@ public class StringAppender {
 
 	public Integer indexOf(String str) {
 		return appendable.indexOf(str);
+	}
+
+	/**
+	 * 清空
+	 *
+	 * @return {@link StringAppender}
+	 */
+	public StringAppender clear() {
+		appendable.delete(0, appendable.length());
+		return this;
 	}
 
 	@Override
