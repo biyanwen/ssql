@@ -7,7 +7,7 @@ import com.github.byw.parser.SsqlParser;
 public abstract class BaseSsqlVisitor extends SsqlBaseVisitor<String> {
 
 	private static final String WHERE = "where";
-	private static final String OR = "|";
+	private static final String OR = ",";
 	private static final String LIKE = "%";
 	/**
 	 * 反序
@@ -134,7 +134,7 @@ public abstract class BaseSsqlVisitor extends SsqlBaseVisitor<String> {
 		if (value.contains("*")) {
 			value = value.replaceAll("\\*", "%");
 			builder.append(value);
-		}else if (value.startsWith("[") && value.endsWith("]")) {
+		}else if (value.startsWith("(") && value.endsWith(")")) {
 			visitLimitValue(value,builder);
 		}else {
 			builder.append(value);

@@ -18,8 +18,8 @@ public class MysqlVisitor extends BaseSsqlVisitor {
 
 	@Override
 	public void visitLimitValue(String value, StringAppender builder) {
-		value = value.replaceAll("\\[", "");
-		value = value.replaceAll("]", "");
+		value = value.replaceAll("\\(", "");
+		value = value.replaceAll("\\)", "");
 		builder.append(value);
 	}
 }
