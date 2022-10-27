@@ -11,6 +11,9 @@ class SsqlHelperTest {
 		String sqlForMysql = SsqlHelper.createSqlForMysql("sc_scell_unit--case_id=13539849;pgccr>=300;unit_id<-;<->(1,5)");
 		assertEquals("select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300  order by unit_id desc  limit 1,5 ;", sqlForMysql);
 
+		String likeSqlForMysql = SsqlHelper.createSqlForMysql("sc_scell_unit--case_id=13539849;unit_name=like='G*';unit_id<-;<->(1,5)");
+		assertEquals("select * from sc_scell_unit where case_id = 13539849 and unit_name like 'G%'  order by unit_id desc  limit 1,5 ;", likeSqlForMysql);
+
 		assertThrows(IllegalArgumentException.class, () -> {
 			SsqlHelper.createSqlForMysql("sc_scell_unit--case_id=13539849;pgccr>=300;<->(1,5);unit_id<-");
 		});
@@ -31,5 +34,11 @@ class SsqlHelperTest {
 
 		String sqlOracleSchema = SsqlHelper.createSqlForOracle("AV.PRODUCT_DIM--DEPARTMENT_NAME='Computers';CATEGORY_ID>=-535;DEPARTMENT_ID<-;<->(2,5)");
 		assertEquals("select * from (select rownum rn,t.* from ( select * from AV . PRODUCT_DIM where DEPARTMENT_NAME = 'Computers' and CATEGORY_ID >= -535  order by DEPARTMENT_ID desc  ) t where rownum <= 5 ) e where e.rn >= 2 ;",sqlOracleSchema);
+
+		String listSqlOracle = SsqlHelper.createSqlForOracle("AV.PRODUCT_DIM--DEPARTMENT_NAME=like='Comp*';DEPARTMENT_ID<-;<->(2,5)");
+		assertEquals("select * from (select rownum rn,t.* from ( select * from AV . PRODUCT_DIM where DEPARTMENT_NAME like 'Comp%'  order by DEPARTMENT_ID desc  ) t where rownum <= 5 ) e where e.rn >= 2 ;",listSqlOracle);
+
+		String orSqlOracle = SsqlHelper.createSqlForOracle("AV.PRODUCT_DIM--DEPARTMENT_NAME=like='Comp*',DEPARTMENT_NAME=like='Cam*';DEPARTMENT_ID<-;<->(2,5)");
+		assertEquals("select * from (select rownum rn,t.* from ( select * from AV . PRODUCT_DIM where DEPARTMENT_NAME like 'Comp%' or DEPARTMENT_NAME like 'Cam%'  order by DEPARTMENT_ID desc  ) t where rownum <= 5 ) e where e.rn >= 2 ;",orSqlOracle);
 	}
 }

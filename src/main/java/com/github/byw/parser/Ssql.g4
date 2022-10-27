@@ -8,7 +8,7 @@ limitExpression: limitCondition value;
 
 logic : ';'|',';// ; 是 and , 是 or
 VALUE_STRING : '\'' (STRING|LIKE_STRING) '\'';
-compareCondition : '=' | '>' | '>=' | '<' | '<=' | '%';
+compareCondition : '=' | '>' | '>=' | '<' | '<=' | '=like=';
 sortCondition : '->' | '<-' ;
 limitCondition : '<->';
 tableName : STRING | STRING + '.' + STRING; //schema

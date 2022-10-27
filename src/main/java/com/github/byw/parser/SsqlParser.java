@@ -32,7 +32,7 @@ public class SsqlParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'--'", "';'", "','", "'='", "'>'", "'>='", "'<'", "'<='", "'%'", 
+			null, "'--'", "';'", "','", "'='", "'>'", "'>='", "'<'", "'<='", "'=like='", 
 			"'->'", "'<-'", "'<->'", "'.'"
 		};
 	}

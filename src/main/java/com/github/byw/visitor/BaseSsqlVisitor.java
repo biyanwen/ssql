@@ -8,7 +8,7 @@ public abstract class BaseSsqlVisitor extends SsqlBaseVisitor<String> {
 
 	private static final String WHERE = "where";
 	private static final String OR = ",";
-	private static final String LIKE = "%";
+	private static final String LIKE = "=like=";
 	/**
 	 * 反序
 	 */
