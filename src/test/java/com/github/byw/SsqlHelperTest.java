@@ -30,11 +30,6 @@ class SsqlHelperTest {
 		});
 	}
 
-	public static void main(String[] args) {
-		String inSqlForOracle = SsqlHelper.createSqlForOracle("AV.PRODUCT_DIM--DEPARTMENT_NAME=like='Comp*',CATEGORY_ID=in=(-530,-533);DEPARTMENT_ID<-;<->(2-5)");
-		System.out.println(inSqlForOracle);
-	}
-
 	@Test
 	void createSqlForOracle() {
 		String sqlOracle = SsqlHelper.createSqlForOracle("PRODUCT_DIM--DEPARTMENT_NAME='Computers';CATEGORY_ID>=-535;DEPARTMENT_ID<-;<->(2-5)");
