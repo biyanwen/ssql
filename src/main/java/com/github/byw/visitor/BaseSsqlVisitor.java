@@ -9,6 +9,8 @@ public abstract class BaseSsqlVisitor extends SsqlBaseVisitor<String> {
 	private static final String WHERE = "where";
 	private static final String OR = ",";
 	private static final String LIKE = "=like=";
+	private static final String IN = "=in=";
+	private static final Integer IN_SQL_CODE = 20;
 	/**
 	 * 反序
 	 */
@@ -87,6 +89,9 @@ public abstract class BaseSsqlVisitor extends SsqlBaseVisitor<String> {
 		if (compareCondition.equals(LIMIT)) {
 			compareCondition = "limit";
 		}
+		if (compareCondition.equals(IN)) {
+			compareCondition = "in";
+		}
 		builder.append(compareCondition);
 		return super.visitCompareCondition(ctx);
 	}
@@ -134,11 +139,15 @@ public abstract class BaseSsqlVisitor extends SsqlBaseVisitor<String> {
 		if (value.contains("*")) {
 			value = value.replaceAll("\\*", "%");
 			builder.append(value);
-		}else if (value.startsWith("(") && value.endsWith(")")) {
-			visitLimitValue(value,builder);
-		}else {
+		} else if (isLimitValue(value, ctx.getStop().getType())) {
+			visitLimitValue(value, builder);
+		} else {
 			builder.append(value);
 		}
 		return super.visitValue(ctx);
+	}
+
+	private boolean isLimitValue(String value, Integer code) {
+		return value.startsWith("(") && value.endsWith(")") && code != 20;
 	}
 }

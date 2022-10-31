@@ -15,8 +15,8 @@ public class SsqlParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, VALUE_STRING=14, NUMBER=15, STRING=16, 
-		LIKE_STRING=17, INTERVAL=18, WS=19;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, VALUE_STRING=15, NUMBER=16, 
+		STRING=17, LIKE_STRING=18, INTERVAL=19, IN_VALUE=20, WS=21;
 	public static final int
 		RULE_statements = 0, RULE_expression = 1, RULE_commonExpression = 2, RULE_sortExpression = 3, 
 		RULE_limitExpression = 4, RULE_logic = 5, RULE_compareCondition = 6, RULE_sortCondition = 7, 
@@ -33,15 +33,15 @@ public class SsqlParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'--'", "';'", "','", "'='", "'>'", "'>='", "'<'", "'<='", "'=like='", 
-			"'->'", "'<-'", "'<->'", "'.'"
+			"'=in='", "'->'", "'<-'", "'<->'", "'.'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, "VALUE_STRING", "NUMBER", "STRING", "LIKE_STRING", "INTERVAL", 
-			"WS"
+			null, null, null, "VALUE_STRING", "NUMBER", "STRING", "LIKE_STRING", 
+			"INTERVAL", "IN_VALUE", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -473,7 +473,7 @@ public class SsqlParser extends Parser {
 			{
 			setState(52);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -523,7 +523,7 @@ public class SsqlParser extends Parser {
 			{
 			setState(54);
 			_la = _input.LA(1);
-			if ( !(_la==T__9 || _la==T__10) ) {
+			if ( !(_la==T__10 || _la==T__11) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -571,7 +571,7 @@ public class SsqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(56);
-			match(T__11);
+			match(T__12);
 			}
 		}
 		catch (RecognitionException re) {
@@ -648,13 +648,13 @@ public class SsqlParser extends Parser {
 					{
 					{
 					setState(64);
-					match(T__12);
+					match(T__13);
 					}
 					}
 					setState(67); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==T__12 );
+				} while ( _la==T__13 );
 				setState(69);
 				match(STRING);
 				}
@@ -718,6 +718,7 @@ public class SsqlParser extends Parser {
 		public TerminalNode VALUE_STRING() { return getToken(SsqlParser.VALUE_STRING, 0); }
 		public TerminalNode NUMBER() { return getToken(SsqlParser.NUMBER, 0); }
 		public TerminalNode INTERVAL() { return getToken(SsqlParser.INTERVAL, 0); }
+		public TerminalNode IN_VALUE() { return getToken(SsqlParser.IN_VALUE, 0); }
 		public ValueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -746,7 +747,7 @@ public class SsqlParser extends Parser {
 			{
 			setState(74);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VALUE_STRING) | (1L << NUMBER) | (1L << INTERVAL))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VALUE_STRING) | (1L << NUMBER) | (1L << INTERVAL) | (1L << IN_VALUE))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -768,7 +769,7 @@ public class SsqlParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0013M\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0015M\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0001"+
@@ -781,8 +782,8 @@ public class SsqlParser extends Parser {
 		">\u0001\t\u0004\tB\b\t\u000b\t\f\tC\u0001\t\u0003\tG\b\t\u0001\n\u0001"+
 		"\n\u0001\u000b\u0001\u000b\u0001\u000b\u0000\u0000\f\u0000\u0002\u0004"+
 		"\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0000\u0004\u0001\u0000\u0002"+
-		"\u0003\u0001\u0000\u0004\t\u0001\u0000\n\u000b\u0002\u0000\u000e\u000f"+
-		"\u0012\u0012F\u0000\u0018\u0001\u0000\u0000\u0000\u0002&\u0001\u0000\u0000"+
+		"\u0003\u0001\u0000\u0004\n\u0001\u0000\u000b\f\u0002\u0000\u000f\u0010"+
+		"\u0013\u0014F\u0000\u0018\u0001\u0000\u0000\u0000\u0002&\u0001\u0000\u0000"+
 		"\u0000\u0004(\u0001\u0000\u0000\u0000\u0006,\u0001\u0000\u0000\u0000\b"+
 		"/\u0001\u0000\u0000\u0000\n2\u0001\u0000\u0000\u0000\f4\u0001\u0000\u0000"+
 		"\u0000\u000e6\u0001\u0000\u0000\u0000\u00108\u0001\u0000\u0000\u0000\u0012"+
@@ -801,15 +802,16 @@ public class SsqlParser extends Parser {
 		"\b\u000001\u0003\u0016\u000b\u00001\t\u0001\u0000\u0000\u000023\u0007"+
 		"\u0000\u0000\u00003\u000b\u0001\u0000\u0000\u000045\u0007\u0001\u0000"+
 		"\u00005\r\u0001\u0000\u0000\u000067\u0007\u0002\u0000\u00007\u000f\u0001"+
-		"\u0000\u0000\u000089\u0005\f\u0000\u00009\u0011\u0001\u0000\u0000\u0000"+
-		":G\u0005\u0010\u0000\u0000;=\u0005\u0010\u0000\u0000<;\u0001\u0000\u0000"+
+		"\u0000\u0000\u000089\u0005\r\u0000\u00009\u0011\u0001\u0000\u0000\u0000"+
+		":G\u0005\u0011\u0000\u0000;=\u0005\u0011\u0000\u0000<;\u0001\u0000\u0000"+
 		"\u0000=>\u0001\u0000\u0000\u0000><\u0001\u0000\u0000\u0000>?\u0001\u0000"+
-		"\u0000\u0000?A\u0001\u0000\u0000\u0000@B\u0005\r\u0000\u0000A@\u0001\u0000"+
-		"\u0000\u0000BC\u0001\u0000\u0000\u0000CA\u0001\u0000\u0000\u0000CD\u0001"+
-		"\u0000\u0000\u0000DE\u0001\u0000\u0000\u0000EG\u0005\u0010\u0000\u0000"+
-		"F:\u0001\u0000\u0000\u0000F<\u0001\u0000\u0000\u0000G\u0013\u0001\u0000"+
-		"\u0000\u0000HI\u0005\u0010\u0000\u0000I\u0015\u0001\u0000\u0000\u0000"+
-		"JK\u0007\u0003\u0000\u0000K\u0017\u0001\u0000\u0000\u0000\u0005 &>CF";
+		"\u0000\u0000?A\u0001\u0000\u0000\u0000@B\u0005\u000e\u0000\u0000A@\u0001"+
+		"\u0000\u0000\u0000BC\u0001\u0000\u0000\u0000CA\u0001\u0000\u0000\u0000"+
+		"CD\u0001\u0000\u0000\u0000DE\u0001\u0000\u0000\u0000EG\u0005\u0011\u0000"+
+		"\u0000F:\u0001\u0000\u0000\u0000F<\u0001\u0000\u0000\u0000G\u0013\u0001"+
+		"\u0000\u0000\u0000HI\u0005\u0011\u0000\u0000I\u0015\u0001\u0000\u0000"+
+		"\u0000JK\u0007\u0003\u0000\u0000K\u0017\u0001\u0000\u0000\u0000\u0005"+
+		" &>CF";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

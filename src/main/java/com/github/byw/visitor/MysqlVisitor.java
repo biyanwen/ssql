@@ -20,6 +20,7 @@ public class MysqlVisitor extends BaseSsqlVisitor {
 	public void visitLimitValue(String value, StringAppender builder) {
 		value = value.replaceAll("\\(", "");
 		value = value.replaceAll("\\)", "");
+		value = value.replace('-', ',');
 		builder.append(value);
 	}
 }
