@@ -6,6 +6,14 @@ ssql 也可以用于对RESTful接口的实体进行参数过滤。它基于[FIQL
 
 例如你可以输入这样一条语句：`sc_scell_unit--case_id=13539849;pgccr>=300;unit_id<-;<->(1-5)` 目标数据库是 Mysql 会被翻译成 `select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300  order by unit_id desc  limit 1,5 ;` 目标数据库是 Oracle 中会被翻译成 `select * from (select rownum rn,t.* from ( select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300  order by unit_id desc  ) t where rownum <= 5 ) e where e.rn >= 1 ;`。
 
+## 版本
+~~~xml
+<dependency>
+    <groupId>com.github.biyanwen</groupId>
+    <artifactId>ssql</artifactId>
+    <version>1.0.0</version>
+</dependency>
+~~~
 ## 语法和语义
 
 ssql 需要由表名+查询条件组成：`tableName--查询条件`。其中 `--` 是分隔符，之前是表名字，之后是相关查询条件。
