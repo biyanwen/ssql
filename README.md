@@ -1,66 +1,94 @@
-## 简介
+## Brief introduction
 
-ssql 是一种 **dsl** 语言，可以方便的生成对**单表的查询 sql 语句**。目前支持生成 **Mysql** 和 **Oracle** 数据库的查询语句如果你有针对其他数据库的需求欢迎提 issue 或者自己实现。
+English | [中文](README_ZH.md)
 
-ssql 也可以用于对RESTful接口的实体进行参数过滤。它基于[FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language)-一种URI友好的语法。FIQL非常适合在URI中使用，没有不安全字符，因此不需要URL编码。
+The ssql is a **DSL** language that can simplify the query of a single table. For now, the tool can support many
+databases, like Mysql and Oracle, and other whose SQL can compatible with a Mysql or Oracle database.
 
-例如你可以输入这样一条语句：`sc_scell_unit--case_id=13539849;pgccr>=300;unit_id<-;<->(1-5)` 目标数据库是 Mysql 会被翻译成 `select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300  order by unit_id desc  limit 1,5 ;` 目标数据库是 Oracle 中会被翻译成 `select * from (select rownum rn,t.* from ( select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300  order by unit_id desc  ) t where rownum <= 5 ) e where e.rn >= 1 ;`。
+This tool is very suited to use on URI because it develops based
+on [FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language), so it has a friendly
+grammar whit URI, it does not have to transfer meaning for special characters.
 
-## 版本
+For example, you can input a sentence with this `sc_scell_unit--case_id=13539849;pgccr>=300;unit_id<-;<->(1-5)`, if
+target database is a Mysql, the tool will
+output `select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300 order by unit_id desc limit 1,5 ;`, if
+target database is an Oracle, the tool will
+output`select * from (select rownum rn,t.* from ( select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300  order by unit_id desc  ) t where rownum <= 5 ) e where e.rn >= 1 ;`
+
+## Maven address
+
 ~~~xml
+
 <dependency>
-    <groupId>com.github.biyanwen</groupId>
-    <artifactId>ssql</artifactId>
-    <version>1.0.0</version>
+  <groupId>com.github.biyanwen</groupId>
+  <artifactId>ssql</artifactId>
+  <version>1.0.0</version>
 </dependency>
 ~~~
-## 语法和语义
 
-ssql 需要由表名+查询条件组成：`tableName--查询条件`。其中 `--` 是分隔符，之前是表名字，之后是相关查询条件。
+## Grammar and semantics
 
-### 逻辑运算符
+ssql is made up of a table name and query conditions, these are connected with `--`, like
+this:`tableName--queryCondition`.
 
-- 逻辑与：`;`
-- 逻辑或：`,`
+### Logical operator
 
-### 比较运算符
+- And：`;`
+- Or：`,`
 
-- Equal to(等于) : `=`
-- Less than(小于) :  `<`
-- Less than or equal to(小于等于) : `<=`
-- Greater than operator(大于) :  `>`
-- Greater than or equal to(大于等于) : `>=`
+### Compare operator
+
+- Equal to: `=`
+- Less than:  `<`
+- Less than or equal to: `<=`
+- Greater than operator:  `>`
+- Greater than or equal to: `>=`
 - In : `=in=`
-- like：`=like=`
+- Like：`=like=`
 
-### 其他：
+### Other：
 
-- 正序：`->`
-- 逆序：`<-`
-- 范围查询（类似 Mysql 中的 limit）`<->`
+- Positive sequence：`->`
+- Reverse order：`<-`
+- Limit（is similar with limit function of Mysql）`<->`
 
-### 数值类型
+### Data type
 
-- 字符串（需要由单引号包裹起来）：`'xxxx'`
-- 数字类型（阿拉伯数字的各种组合）：`123456`
-- 模糊匹配字符串（与 =like= 搭配使用，用 * 来占位）：`'*爱你'` （会被转义为 `'%爱你'`
-- 区间数值（与 `<->` 搭配使用）：`<->(1-5)` （会被转义为 `limit 1,5`）
+- String（Need to be wrapped by single quotation marks）：`'xxxx'`
+- Number（Various combinations of Arabic numerals）：`123456`
+- Fuzzy match string(It needs to use the `=like=` and `*`, the `*` is a placeholder, finally it will be converted
+  to`%`):`'*eva'` -> `'%eva'`
+- Pagination query(It needs to use the `<->` symbol):`<->(1-5)` (It will be converted to `limit 1,5`)
 
-## 例子
+## For example:
 
-以 Mysql 为例：
+I will take a Mysql database as an example:
 
-~~~sql
+~~~
 sc_scell_unit--case_id=13539849;pgccr>=300;unit_id<-;<->(1-5)
-详解： `sc_scell_unit`  是表名; `case_id=13539849` 是指 case_id 需要等于 13539849;  `;` 是 and 的意思; `pgccr>=300` 表示 pgccr 要大于等于 300;`unit_id<-` 表示按照 unit_id 字段逆序返回结果; <->(1-5) 表示 limie 1,5;
-等价于：select * from sc_scell_unit where case_id = 13539849 and pgccr >= 300  order by unit_id desc  limit 1,5 ;
 
+explain in detail:
+1. The `sc_scell_unit` is a table name;
+2. In the `case_id=13539849`, the `case_id` means that the field needs to equal 13539849;
+3. The `;`is same as the and; 
+4. The `pgccr>=300`means the pgccr needs greater than or equal to 300;
+5. The `unit_id<-` means that the result is reversed an order by unit_id filed;
+6. The <->(1-5) means limie 1,5;
 
+The tool uses this input will output a SQL to a Mysql:
+
+select * from sc_scell_unit
+where case_id = 13539849
+  and pgccr >= 300
+order by unit_id desc limit 1,5;
 ~~~
-## 如何使用
+
+## The whole example:
+
 ~~~java
-//如果是 Oracle 请调用 SsqlHelper.createSqlForOracle()
-String sqlForMysql = SsqlHelper.createSqlForMysql("sc_scell_unit--case_id=13539849;pgccr>=300;unit_id<-;<->(1-5)");
+//If your target database is an Oracle, you should invoke SsqlHelper.createSqlForOracle() method.
+String sqlForMysql=SsqlHelper.createSqlForMysql("sc_scell_unit--case_id=13539849;pgccr>=300;unit_id<-;<->(1-5)");
 ~~~
-更多使用样例请参考 com.github.byw.SsqlHelperTest
+
+If you want to get more examples, you can see the `com.github.byw.SsqlHelperTest` class. 
 
